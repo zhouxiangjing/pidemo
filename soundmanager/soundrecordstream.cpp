@@ -5,7 +5,7 @@
 
 SoundRecordStream::SoundRecordStream() {
 
-    m_max_size = 1024*1024;
+    m_max_size = 1024*1024*10;
     m_data = new char[m_max_size];
     
     memset(m_data, 0, m_max_size);
@@ -43,6 +43,8 @@ void SoundRecordStream::clear() {
     if(nullptr != m_data) {
         memset(m_data, 0, m_max_size);
     }
+
+    m_cur_pos = 0;
 }
 
 int SoundRecordStream::append(char* data, size_t size) {
@@ -50,7 +52,7 @@ int SoundRecordStream::append(char* data, size_t size) {
     if(nullptr == m_data || nullptr == data || size <= 0) 
         return -1;
 
-    printf("### zxj ### m_max_size data_size m_cur_pos  %d %d %d\n", m_max_size, size, m_cur_pos);
+ //   printf("### zxj ### m_max_size data_size m_cur_pos  %d %d %d\n", m_max_size, size, m_cur_pos);
     if(size + m_cur_pos >= m_max_size) {
         return -2;
     }

@@ -1,6 +1,8 @@
 #ifndef AIP_H
 #define AIP_H
 
+#include <string>
+
 namespace aip {
     class Speech;
 };
@@ -15,7 +17,7 @@ public:
      * ASR语音识别示例
      */
 
-    void ASR(const char* pcm_data, int size);
+    int ASR(std::string data);
 
     /**
      * ASR语音识别示例,使用远程文件地址

@@ -18,30 +18,28 @@ Aip::~Aip() {
 /**
  * ASR语音识别示例
  */
-void Aip::ASR(const char* pcm_data, int size) {
+int Aip::ASR(std::string data) {
+
+    printf("### zxj ### data size = %d\n", data.size());
+    if(data.size() < 10000) {
+        return 0;
+    }
+
     std::map<std::string, std::string> options;
     options["lan"] = "ZH";
+    Json::Value result = client->recognize(data, "pcm", 16000, options);
+    if(result["err_no"] == 0) {
+        std::string ret = result["result"][0].asString();
+        std::cout << "语音识别结果 : " <<  ret << std::endl;
 
-    FILE* fp = fopen("../assets/16k_test.pcm", "rb");
-    if(nullptr != fp) {
-
-        fseek(fp, 0, SEEK_END);
-        size_t pcm_size = ftell(fp);
-        fseek(fp, 0, SEEK_SET);
-
-        char* data = new char[pcm_size];
-        memset(data, 0, pcm_size);
-        fread(data, 1, pcm_size, fp);
-
-        std::string file_content(data, pcm_size);
-        Json::Value result = client->recognize(file_content, "pcm", 16000, options);
-        std::cout << "语音识别本地文件结果:" << std::endl << result.toStyledString();
-
-        delete[] data;
-        fclose(fp);
+        if(ret.find("退出") != std::string::npos || ret.find("结束") != std::string::npos) {
+            return -1;
+        }
     } else {
-        printf("### zxj ### open file faild.\n");
+        std::cout << "语音识别错误 : " << result["err_no"] << " " << result["err_msg"].asString() << std::endl;
     }
+    
+    return 0;
 }
 
 /**

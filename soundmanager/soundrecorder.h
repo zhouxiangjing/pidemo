@@ -39,6 +39,7 @@ public:
 
     std::string error_msg() const;
 
+    std::string push_pcm_data();
     int set_wav_info(unsigned int channels, unsigned int samples_per_second, unsigned int bits_per_sample);
     int save_wav_file(const char* wav_file);
 

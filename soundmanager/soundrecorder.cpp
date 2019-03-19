@@ -91,6 +91,17 @@ std::string SoundRecorder::error_msg() const {
     return m_recorder_err_msg;
 }
 
+std::string SoundRecorder::push_pcm_data() {
+
+    setRecorderPause(true);
+
+    std::string data(m_recorder_stream->data(), m_recorder_stream->size());
+    m_recorder_stream->clear();
+
+    setRecorderPause(false);
+    return data;
+}
+
 int SoundRecorder::set_wav_info(unsigned int channels, unsigned int samples_per_second, unsigned int bits_per_sample) {
 
     if(is_recording()) {
