@@ -1,69 +1,34 @@
-#include "aip-cpp-sdk-0.7.4/speech.h"
 
-void ASR(aip::Speech* client);
+#include <stdio.h>
 
-void ASR_url(aip::Speech* client);
-
-void TTS(aip::Speech* client);
+#include "aip/aip.h"
+#include "soundmanager/soundmanager.h"
 
 int main()
 {
-    // 务必替换百度云控制台中新建百度语音应用的 Api Key 和 Secret Key
-    aip::Speech * client = new aip::Speech("15647944", "qkSqfVh0zafsSsB2ZXb6WSlG","egsXHnZGI2BIGKBaY4ekyxzu7TxRqQ1N");
+/*
+    SoundRecorder recorder("plughw:1,0");
+    recorder.set_wav_info(1, 16000, 16);
+    if(recorder.start()) {
+        printf("recorder start faild.\n");
+        return -1;
+    }
     
-    ASR(client);
-    
-    ASR_url(client);
+    do {
 
-    TTS(client);
+    } while(true)
     
+    recorder.stop();
+*/
+    Aip aip;
+    aip.ASR(nullptr, 0);
+    // aip.ASR_url();
+    // aip.TTS();
+
+    // SoundManager sound_manager;
+    // sound_manager.loadWavFormatInformation();
+
     return 0;
 }
 
-/**
- * ASR语音识别示例
- */
-void ASR(aip::Speech* client) {
-    std::map<std::string, std::string> options;
-    options["lan"] = "ZH";
-    std::string file_content;
-    aip::get_file_content("./assets/16k_test.pcm", &file_content);
-    Json::Value result = client->recognize(file_content, "pcm", 16000, options);
-    std::cout << "语音识别本地文件结果:" << std::endl << result.toStyledString();
-}
 
-/**
- * ASR语音识别示例,使用远程文件地址
- */
-void ASR_url(aip::Speech* client) {
-    std::map<std::string, std::string> options;
-    options["lan"] = "zh";
-    Json::Value result =
-    client->recognize_url("http://bos.nj.bpc.baidu.com/v1/audio/8k.amr",
-                          "http://your_site/dump",
-                          "amr", 8000, options);
-    std::cout << "语音识别远程文件结果:" << std::endl << result.toStyledString();
-}
-
-/**
- * TTS语音合成示例
- */
-void TTS(aip::Speech* client) {
-    std::ofstream ofile;
-    std::string file_ret;
-    std::map<std::string, std::string> options;
-    options["spd"] = "5";
-    options["per"] = "2";
-    ofile.open("./assets/tts.mp3", std::ios::out | std::ios::binary);
-    Json::Value result = client->text2audio("百度语音合成测试", options, file_ret);
-    // 如果file_ret为不为空则说明合成成功，返回mp3文件内容
-    if (!file_ret.empty())
-    {
-        // 合成成功保存文件
-        ofile << file_ret;
-        std::cout << "语音合成成功，打开目录下的tts.mp3文件听听看" << std::endl;
-    } else {
-        // 合成出错，打印错误信息
-        std::cout << result.toStyledString();
-    }
-}
