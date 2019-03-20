@@ -8,7 +8,7 @@
 
 Aip::Aip() {
 
-    client = new aip::Speech("15647944", "qkSqfVh0zafsSsB2ZXb6WSlG","egsXHnZGI2BIGKBaY4ekyxzu7TxRqQ1N");
+    client = new aip::Speech("", "qkSqfVh0zafsSsB2ZXb6WSlG","egsXHnZGI2BIGKBaY4ekyxzu7TxRqQ1N");
 }
 
 Aip::~Aip() {
