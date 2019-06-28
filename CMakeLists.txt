@@ -1,11 +1,12 @@
-
 cmake_minimum_required(VERSION 3.4.1)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -static-libgcc -static-libstdc++")
+include_directories(${CMAKE_SOURCE_DIR}/hpsocket/include)
 
-add_subdirectory(aip)
-add_subdirectory(soundmanager)
+add_library(hpsocket STATIC IMPORTED)
+set_target_properties(hpsocket PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/hpsocket/lib/libhpsocket.a)
 
-add_executable(pidemo pidemo.cpp)
+add_executable(pidemo pidemo.cpp hpsocket/helper.cpp)
 
-target_link_libraries(pidemo aip soundmanager)
+add_subdirectory(pictl)
+
+target_link_libraries(pidemo pthread hpsocket pictl)
