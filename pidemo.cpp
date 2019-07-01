@@ -84,6 +84,7 @@ int main(int argc, char* const argv[])
 
 	if(!g_server->Start(g_app_arg.bind_addr, g_app_arg.port)) {
 		printf("hpsocket start faild.\n");
+		return -2;
 	}
 	
 	printf("hpsocket start succeed.\n");

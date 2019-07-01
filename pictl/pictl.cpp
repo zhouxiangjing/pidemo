@@ -26,38 +26,47 @@ int pi_init() {
 
 int pi_run(float speed, float turn) {
 
-    int INT0_val = 0;
-    int INT1_val = 0;
-    int INT2_val = 0;
-    int INT3_val = 0;
+    printf("pi_run start.\n");
+    int IN0_val = 0;
+    int IN1_val = 0;
+    int IN2_val = 0;
+    int IN3_val = 0;
 
     if(speed > 0) {
         if(turn >= 0) {
             // 正向 右拐
-            INT0_val = (int)(speed*MAX_PWM);
-            INT2_val = (int)(speed*MAX_PWM*(1-turn));
+            printf("forward right.\n");
+            IN0_val = (int)(speed*MAX_PWM);
+            IN2_val = (int)(speed*MAX_PWM*(1-turn));
         } else {
             // 正向 左拐
-            INT0_val = (int)(speed*MAX_PWM*(1+turn));
-            INT2_val = (int)(speed*MAX_PWM);
+            printf("forward left.\n");
+            IN0_val = (int)(speed*MAX_PWM*(1+turn));
+            IN2_val = (int)(speed*MAX_PWM);
         }
     } else if(speed < 0) {
         speed = -speed;
         if(turn >= 0) {
             // 后退 靠右
-            INT1_val = (int)(speed*MAX_PWM);
-            INT3_val = (int)(speed*MAX_PWM*(1-turn));
+            printf("back right.\n");
+            IN1_val = (int)(speed*MAX_PWM);
+            IN3_val = (int)(speed*MAX_PWM*(1-turn));
         } else {
             // 后退 靠左
-            INT1_val = (int)(speed*MAX_PWM*(1+turn));
-            INT3_val = (int)(speed*MAX_PWM);
+            printf("back left.\n");
+            IN1_val = (int)(speed*MAX_PWM*(1+turn));
+            IN3_val = (int)(speed*MAX_PWM);
         }
+    } else {
+        printf("stop.\n");
     }
 
+    printf("INT0_val=%d INT1_val=%d INT2_val=%d INT3_val=%d.\n", INT0_val, INT1_val, INT2_val, INT3_val);
     softPwmWrite(IN0, INT0_val);
     softPwmWrite(IN1, INT1_val);
     softPwmWrite(IN2, INT2_val);
     softPwmWrite(IN3, INT3_val);
 
+    printf("pi_run end.\n");
     return 0;
 }
